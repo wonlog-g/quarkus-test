@@ -11,13 +11,12 @@ public class MovieConsumer {
     private final Logger logger = Logger.getLogger(MovieConsumer.class);
 
     @Incoming("movies-in")
-    public void receive(Record<Integer, String> record) {
+    public void receive(Record<String, String> record) {
         messageOccurredException();
         logger.infof("Got a movie: %d - %s", record.key(), record.value());
     }
 
     public void messageOccurredException() {
-        logger.infof("MovieConsumer EXCEPTION");
-        throw new RuntimeException();
+        throw new RuntimeException("MovieConsumer 예외 발생!!");
     }
 }
