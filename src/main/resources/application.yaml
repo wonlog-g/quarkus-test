@@ -9,6 +9,15 @@ quarkus:
         max-backup-index: 30
         file-suffix: .yyyy-MM-dd
       level: ALL
+  mongodb:
+    connection-string: mongodb://localhost:27017
+    database: day6
+
+# shedlock
+shedlock:
+  defaults:
+    lock-at-least-for: PT120S
+    lock-at-most-for: PT120S
 
 # The Kafka broker location (defaults to localhost:9092)
 kafka:
@@ -48,3 +57,4 @@ mp:
 # Configuring the Dead Letter Queue for the incoming channel
 # mp.messaging.incoming.dead-letter-topic-movies.connector=smallrye-kafka
 # mp.messaging.incoming.dead-letter-topic-movies.topic=dead-letter-topic-movies-in
+
