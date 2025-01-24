@@ -1,0 +1,50 @@
+quarkus:
+  log:
+    level: ALL
+    file:
+      enable: true
+      path: /stove/test/quarkus-test.log
+      rotation:
+        max-file-size: 50M
+        max-backup-index: 30
+        file-suffix: .yyyy-MM-dd
+      level: ALL
+
+# The Kafka broker location (defaults to localhost:9092)
+kafka:
+  bootstrap:
+    servers: localhost:9092
+
+# Configuring the channel for sending and receiving messages
+mp:
+  messaging:
+    outgoing:
+      movies-out:
+        connector: smallrye-kafka
+        topic: movies
+        key:
+          serializer: org.apache.kafka.common.serialization.StringSerializer
+        value:
+            serializer: org.apache.kafka.common.serialization.StringSerializer
+
+    incoming:
+      movies-in:
+        connector: smallrye-kafka
+        topic: movies
+        key:
+          deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        value:
+            deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        failure-strategy: delayed-retry-topic
+        delayed-retry-topic:
+          topics: my_retry_topic_2000,my_retry_topic_4000,my_retry_topic_10000
+          max-retries: 3
+        dead-letter-queue:
+          topic: dead-letter-topic-movies-in
+        auto:
+          offset:
+            reset: latest
+
+# Configuring the Dead Letter Queue for the incoming channel
+# mp.messaging.incoming.dead-letter-topic-movies.connector=smallrye-kafka
+# mp.messaging.incoming.dead-letter-topic-movies.topic=dead-letter-topic-movies-in
